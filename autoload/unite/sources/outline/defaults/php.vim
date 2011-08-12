@@ -21,7 +21,7 @@ let s:Util = unite#sources#outline#import('Util')
 
 let s:outline_info = {
       \ 'heading-1': s:Util.shared_pattern('cpp', 'heading-1'),
-      \ 'heading'  : '^\s*\%(interface\|class\|\%(\h\w*\s\+\)\=function\)\>',
+      \ 'heading'  : '^\s*\%(interface\|\%(abstract\s\+\)\=class\|\%(\h\w*\s\+\)\{0,3}function\)\>',
       \
       \ 'skip': {
       \   'header': {
@@ -79,6 +79,7 @@ function! s:outline_info.create_heading(which, heading_line, matched_line, conte
       " function or method
       let heading.type = 'function'
       let heading.word = substitute(heading.word, '\<function\s*', '', '')
+      let heading.word = substitute(heading.word, '\<abstract\s*', '', '')
       if heading.word =~ '^\s*public\>'
         let heading.word = substitute(heading.word, '\<public\s*', '+ ', '')
       elseif heading.word =~ '^\s*protected\>'
